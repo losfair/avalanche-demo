@@ -1,0 +1,24 @@
+{
+  "name": "avalanche-demo",
+  "version": "0.0.0",
+  "description": "Demos of the Avalanche consensus family.",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/losfair/avalanche-demo.git"
+  },
+  "keywords": [
+    "avalanche",
+    "consensus",
+    "blockchain"
+  ],
+  "author": "Heyang Zhou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/losfair/avalanche-demo/issues"
+  },
+  "homepage": "https://github.com/losfair/avalanche-demo#readme"
+}
