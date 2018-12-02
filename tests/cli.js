@@ -9,9 +9,9 @@ class UserContext {
         this.name = name;
         this.color = null;
         this.byzantine = byzantine;
-        this.sampleSize = 20;
+        this.sampleSize = 15;
         this.alpha = 0.7;
-        this.beta = 15;
+        this.beta = 10;
         this.messageCount = 0;
     }
 
@@ -48,6 +48,8 @@ setInterval(() => {
     let all_red = true;
     let all_decided = true;
     for (let n of net.nodes) {
+        if (n.config.userContext.byzantine) continue;
+
         if (n.policy.color != "red") {
             all_red = false;
         }
@@ -56,18 +58,22 @@ setInterval(() => {
         }
     }
     if (all_red) {
-        console.log("All nodes are red.");
+        console.log("All correct nodes are red.");
     }
     if (all_decided) {
         if (!all_red) {
-            console.log("All nodes are decided but some of them are not red - consensus failed!");
+            console.log("All correct nodes are decided but some of them are not red - consensus failed!");
             process.exit(1);
         }
         let messageCount = 0;
+        let nodeCount = 0;
         for (let n of net.nodes) {
+            if (n.config.userContext.byzantine) continue;
+
             messageCount += n.config.userContext.messageCount;
+            nodeCount++;
         }
-        console.log("All " + net.nodes.length + " nodes are decided in " + n_iter + " iterations with a total of " + messageCount + " messages.");
+        console.log("All " + nodeCount + " correct nodes are decided in " + n_iter + " iterations with a total of " + messageCount + " messages.");
         process.exit(0);
     }
 }, 100);
