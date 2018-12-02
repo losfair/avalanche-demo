@@ -15,15 +15,18 @@ export class NodeConfig<T extends UserContext<C>, C> {
 class Node<T extends UserContext<C>, C, P extends NodePolicy<T, C, P, B>, B extends NodePolicyBuilder<T, C, P, B>> {
     policy: P;
     config: NodeConfig<T, C>;
+    shuffledRequestQueue: any[];
 
     constructor(config: NodeConfig<T, C>, policy: P) {
         this.config = config;
         this.policy = policy;
+        this.shuffledRequestQueue = [];
     }
 }
 
 export interface NodePolicy<T extends UserContext<C>, C, P extends NodePolicy<T, C, P, B>, B extends NodePolicyBuilder<T, C, P, B>> {
     color: C;
+    requestQueue: any[],
     query(userContext: T): void;
     tick(userContext: T, network: Network<T, C, P, B>): Promise<void>;
 }
@@ -51,9 +54,24 @@ export class Network<T extends UserContext<C>, C, P extends NodePolicy<T, C, P, 
     }
 
     tick() {
+        // Simulate async network.
         for (let node of this.nodes) {
+            let currentQueueLen = node.policy.requestQueue.length;
+
+            for (let req of node.policy.requestQueue) {
+                node.shuffledRequestQueue.push(req);
+            }
+
+            shuffleInPlace(node.shuffledRequestQueue);
+
+            let k = Math.floor(currentQueueLen * 2 * Math.random());
+            if (k < 0) k = 0;
+            if (k > node.shuffledRequestQueue.length) k = node.shuffledRequestQueue.length;
+
+            node.policy.requestQueue = node.shuffledRequestQueue.splice(0, k);
             node.policy.query(node.config.userContext);
         }
+
         for (let node of this.nodes) {
             node.policy.tick(node.config.userContext, this);
         }
