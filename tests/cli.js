@@ -2,7 +2,7 @@ const network = require("../build/network");
 const slush = require("../build/slush");
 const snowflake = require("../build/snowflake");
 
-const N_NODES = 1000;
+const N_NODES = 5000;
 
 class UserContext {
     constructor(name, byzantine) {
@@ -30,7 +30,7 @@ class UserContext {
 let nodes = [];
 
 for (let i = 0; i < N_NODES; i++) {
-    let byzantine = (i % 5 == 0);
+    let byzantine = (i % 10 == 0);
     nodes.push({
         userContext: new UserContext("" + i, byzantine),
     });
