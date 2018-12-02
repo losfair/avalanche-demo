@@ -65,7 +65,7 @@ export class Network<T extends UserContext<C>, C, P extends NodePolicy<T, C, P, 
             shuffleInPlace(node.shuffledRequestQueue);
 
             let k = Math.floor(currentQueueLen * 2 * Math.random());
-            if (k < 0) k = 0;
+            if (k < 100) k = 100;
             if (k > node.shuffledRequestQueue.length) k = node.shuffledRequestQueue.length;
 
             node.policy.requestQueue = node.shuffledRequestQueue.splice(0, k);
