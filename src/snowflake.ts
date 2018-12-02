@@ -41,6 +41,7 @@ export class Snowflake<T extends UserContext<C>, C> implements NodePolicy<T, C, 
                 req.resolve(this.color);
             }
         }
+        userContext.messageCount += this.requestQueue.length;
         this.requestQueue = [];
     }
 

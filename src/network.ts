@@ -3,6 +3,7 @@ export interface UserContext<C> {
     sampleSize: number;
     alpha: number;
     beta: number;
+    messageCount: number;
     updateColor(color: C): void;
     byzantineColor(color: C): C;
 }

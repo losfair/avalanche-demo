@@ -37,6 +37,7 @@ export class Slush<T extends UserContext<C>, C> implements NodePolicy<T, C, Slus
                 req.resolve(this.color);
             }
         }
+        userContext.messageCount += this.requestQueue.length;
         this.requestQueue = [];
     }
 
