@@ -9,9 +9,9 @@ class UserContext {
         this.name = name;
         this.color = null;
         this.byzantine = byzantine;
-        this.sampleSize = 15;
-        this.alpha = 0.7;
-        this.beta = 10;
+        this.sampleSize = 10;
+        this.alpha = 0.8;
+        this.beta = 11;
         this.messageCount = 0;
     }
 
