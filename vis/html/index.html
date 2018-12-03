@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="vis.min.css" />
+    <script src="vis.min.js"></script>
+    <script src="bundle.js"></script>
+
+    <script>
+        function handleReset() {
+            document.getElementById("o-decided").innerText = "";
+            resetView(
+                document.getElementById("main-cvs"),
+                document.getElementById("i-policy").value,
+                parseInt(document.getElementById("i-num-nodes").value),
+                parseFloat(document.getElementById("i-byzantine-prob").value),
+                () => document.getElementById("o-decided").innerText = "Decided",
+            );
+        }
+    </script>
+</head>
+
+<body>
+    <div style="font-size: 12px">
+        Policy: <input type="text" id="i-policy" value="snowball" />
+        Number of nodes: <input type="text" id="i-num-nodes" value="50" />
+        Byzantine probability: <input type="text" id="i-byzantine-prob" value="0.1" />
+        <button onclick="handleReset()">Reset</button>
+        <span id="o-decided"></span>
+    </div>
+    <div id="main-cvs" style="position: fixed; width: 100%; height: 100%;"></div>
+</body>
+
+</html>
