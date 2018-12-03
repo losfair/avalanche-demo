@@ -1,6 +1,7 @@
 const network = require("../build/network");
 const slush = require("../build/slush");
 const snowflake = require("../build/snowflake");
+const snowball = require("../build/snowball");
 
 const N_NODES = 5000;
 
@@ -37,7 +38,8 @@ for (let i = 0; i < N_NODES; i++) {
 }
 
 //let net = new network.Network(nodes, new slush.SlushBuilder());
-let net = new network.Network(nodes, new snowflake.SnowflakeBuilder());
+//let net = new network.Network(nodes, new snowflake.SnowflakeBuilder());
+let net = new network.Network(nodes, new snowball.SnowballBuilder());
 net.nodes[0].policy.color = "red";
 
 let n_iter = 0;
