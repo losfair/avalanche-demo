@@ -14,6 +14,7 @@
                 document.getElementById("i-policy").value,
                 parseInt(document.getElementById("i-num-nodes").value),
                 parseFloat(document.getElementById("i-byzantine-prob").value),
+                parseInt(document.getElementById("i-num-initial-colors").value),
                 () => document.getElementById("o-decided").innerText = "Decided",
             );
         }
@@ -25,6 +26,7 @@
         Policy: <input type="text" id="i-policy" value="snowball" />
         Number of nodes: <input type="text" id="i-num-nodes" value="50" />
         Byzantine probability: <input type="text" id="i-byzantine-prob" value="0.1" />
+        Number of initial colors: <input type="text" id="i-num-initial-colors" value="1" />
         <button onclick="handleReset()">Reset</button>
         <span id="o-decided"></span>
     </div>
