@@ -3,10 +3,6 @@ const slush = require("../build/slush");
 const snowflake = require("../build/snowflake");
 const snowball = require("../build/snowball");
 
-const DEFAULT_COLOR = "rgb(255, 0, 0)";
-const BYZANTINE_COLOR = "rgb(0, 0, 255)";
-const INITIAL_BYZANTINE_COLOR = "rgb(0, 255, 0)";
-
 let intervalId = null;
 
 class UserContext {
@@ -17,39 +13,30 @@ class UserContext {
         this.byzantine = byzantine;
         this.sampleSize = 10;
         this.alpha = 0.8;
-        this.beta = 11;
+        this.beta = 15;
         this.messageCount = 0;
     }
 
     updateColor(color) {
-        if (this.byzantine) {
-            this.nodes.update({
-                id: this.id,
-                color: {
-                    background: INITIAL_BYZANTINE_COLOR,
-                }
-            });
-            return;
-        }
-
         if (color != this.color) {
-            console.log(this.id + ": " + this.color + " -> " + color);
+            console.log((this.byzantine ? "[B] " : "") + this.id + ": " + this.color + " -> " + color);
             this.color = color;
             this.nodes.update({
                 id: this.id,
                 color: {
                     background: color
-                }
+                },
+                borderWidth: this.byzantine ? 2 : 0,
             });
         }
     }
 
     byzantineColor(color) {
-        return BYZANTINE_COLOR;
+        return "rgb(0, 0, 255)";
     }
 }
 
-window.resetView = function (container, policy, numNodes, byzantineProbability, decidedCallback = null) {
+window.resetView = function (container, policy, numNodes, byzantineProbability, numInitialColors, decidedCallback = null) {
     if (intervalId !== null) {
         clearInterval(intervalId);
         intervalId = null;
@@ -86,12 +73,16 @@ window.resetView = function (container, policy, numNodes, byzantineProbability, 
             throw new Error("invalid policy");
     }
     let net = new network.Network(netNodes, policyBuilder);
-    net.nodes[0].policy.color = DEFAULT_COLOR;
+    for (let i = 0; i < numInitialColors; i++) {
+        net.nodes[Math.floor(Math.random() * net.nodes.length)].policy.color = randomColor();
+    }
+    //net.nodes[0].policy.color = DEFAULT_COLOR;
 
     let options = {
         nodes: {
             color: {
-                background: "rgb(200, 200, 200)"
+                background: "rgb(200, 200, 200)",
+                border: "rgb(0, 0, 0)"
             },
             shape: "dot",
             size: 10,
@@ -126,4 +117,11 @@ window.resetView = function (container, policy, numNodes, byzantineProbability, 
             if (decidedCallback) decidedCallback();
         }
     }, 200);
+}
+
+function randomColor() {
+    let rr = Math.floor(Math.random() * 256);
+    let gg = Math.floor(Math.random() * 256);
+    let bb = Math.floor(Math.random() * 256);
+    return `rgb(${rr},${gg},${bb})`;
 }
